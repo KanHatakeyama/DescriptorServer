@@ -32,15 +32,16 @@ def fetch_descriptor(smiles, option_list):
         obj.save()
 
     data_dict["SMILES"] = smiles
+    print(option_list)
 
     # descriptors
     # if available, use database values. if not, calculate them
 
     command_list = [
-        ["rdkit", obj.RDKit_desc, rdkit_calculator],
-        ["avalonFP", obj.avfp_desc, avfp_calculator],
-        ["mordred2d", obj.mord2d_desc, mord2d_calculator],
-        ["JR", obj.jr_desc, jr_calculator],
+        ["rdkit", "RDKit_desc", rdkit_calculator],
+        ["avalonFP", "avfp_desc", avfp_calculator],
+        ["mordred2d", "mord2d_desc", mord2d_calculator],
+        ["JR", "jr_desc", jr_calculator],
     ]
     for command in command_list:
         name = command[0]
@@ -48,9 +49,15 @@ def fetch_descriptor(smiles, option_list):
         calculator = command[2]
 
         if name in option_list:
-            if desc is None:
-                desc = calculator.calc(smiles)
+            if getattr(obj, desc) is None:
+                dict_desc = calculator.calc(smiles)
+                json_desc = json.dumps(dict_desc)
+                setattr(obj, desc, json_desc)
                 obj.save()
-            data_dict[name] = desc
+            else:
+                dict_desc = json.loads(getattr(obj, desc))
+
+            for k, v in dict_desc.items():
+                data_dict[f"{name}_{k}"] = v
 
     return data_dict

@@ -41,7 +41,7 @@ class RDKitDescriptors:
         self.desc_list = [desc_name[0] for desc_name in Descriptors.descList]
         self.calculator = MoleculeDescriptors.MolecularDescriptorCalculator(
             self.desc_list)
-        self.desc_list = ["RDKit_desc_" +
+        self.desc_list = ["" +
                           desc_name for desc_name in self.desc_list]
         self.auto_correct = auto_correct
         self.dict_mode = dict_mode
@@ -122,7 +122,7 @@ class Fingerprint(RDKitDescriptors):
         super(RDKitDescriptors, self).__init__()
         self.calculator = fp_func
         self.fp_len = len(fp_func("C"))
-        self.desc_list = ["FP_"+str(i) for i in range(self.fp_len)]
+        self.desc_list = [""+str(i) for i in range(self.fp_len)]
         self.auto_correct = False
         self.dict_mode = dict_mode
 
@@ -189,7 +189,7 @@ class MordredDescriptor(RDKitDescriptors):
         self.auto_correct = auto_correct
         self.desc_list = list(self.calculator.pandas(
             [mol_from_smiles("C")]).columns)
-        self.desc_list = ["Mordred_desc_" +
+        self.desc_list = ["" +
                           desc_name for desc_name in self.desc_list]
 
     def _desc_calc(self, smiles, dict_mode=False):

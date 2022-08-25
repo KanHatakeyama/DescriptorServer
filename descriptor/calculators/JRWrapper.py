@@ -326,7 +326,7 @@ class JRWrapper:
         labels = ["BoilingPoint", "MeltingPoint", "CriticalTemp", "CriticalPress", "CriticalVolume",
                   "EnthalpyForm", "GibbsEnergy", "HeatCapacity", "EnthalpyVap", "EnthalpyFus",
                   "LiquidVisco", "CrystalSolub_1", "CrystalSolub_2", "AmorphSolub_1", "AmorphSolub_2"]
-        labels = ["JR_"+i for i in labels]
+        labels = [""+i for i in labels]
         vals = [self._BoilingPoint, self._MeltingPoint, self._CriticalTemp, self._CriticalPress, self._CriticalVolume,
                 self._EnthalpyForm, self._GibbsEnergy, self._HeatCapacity, self._EnthalpyVap, self._EnthalpyFus,
                 self._LiquidVisco, self._CrystalSolub_1, self._CrystalSolub_2, self._AmorphSolub_1, self._AmorphSolub_2]
