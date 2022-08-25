@@ -1,0 +1,19 @@
+<html>
+
+<body>
+    <form action="/descriptor/post" method="post">
+        {% csrf_token %}
+        <div>
+            <label for="SMILES">SMILES</label>
+            <br>
+            <textarea id="SMILES" name="SMILES">{{ SMILES }}</textarea>
+        </div>
+        <label><input type="checkbox" name="opt" value="rdkit">rdkit</label>
+        <label><input type="checkbox" name="opt" value="avalonFP">avalonFP</label>
+        <label><input type="checkbox" name="opt" value="mordred2d">mordred2d</label>
+        <label><input type="checkbox" name="opt" value="JR">JR</label>
+        <input type="submit" value="Calculate!">
+    </form>
+</body>
+
+</html>

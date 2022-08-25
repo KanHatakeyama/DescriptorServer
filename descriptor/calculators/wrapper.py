@@ -44,7 +44,7 @@ def fetch_descriptor(request):
         if obj.mord2d_desc is None:
             obj.mord2d_desc = mord2d_calculator.calc(smiles)
             obj.save()
-        data_dict["Mordred 2D"] = obj.mord2d_desc
+        data_dict["mordred2d"] = obj.mord2d_desc
 
     # JR
     if "jr" in request.GET:
