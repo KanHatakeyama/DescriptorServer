@@ -1,15 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
-from .calculators.wrapper import fetch_descriptor
+from .calculators.wrapper import fetch_descriptor, process_smiles
 from django.views import View
+import pandas as pd
 # Create your views here.
-
-
-def calc(request):
-    ret = fetch_descriptor(request)
-
-    return JsonResponse(ret)
 
 
 class PostView(View):
@@ -21,14 +16,22 @@ class PostView(View):
 
     def post(self, request, *args, **kwargs):
         smiles_list = request.POST['SMILES']
-        option_list = request.POST["opt"]
-        print(smiles_list, option_list)
 
-        context = {
-            'SMILES': request.POST['SMILES']+"a",
-        }
+        if "opt" in request.POST:
+            option_list = request.POST["opt"]
+        else:
+            option_list = []
 
-        return render(request, 'post.html', context)
+        processed_dict = process_smiles(smiles_list, option_list)
+
+        df = pd.DataFrame.from_dict(processed_dict).T
+        filename = request.POST["filename"]
+
+        response = HttpResponse(content_type='text/csv; charset=utf8')
+        response['Content-Disposition'] = f'attachment; filename={filename}'
+        df.to_csv(path_or_buf=response, encoding='utf_8_sig', index=None)
+        return response
+        return JsonResponse(ret)
 
 
 post_view = PostView.as_view()

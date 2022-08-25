@@ -1,5 +1,6 @@
 from ..models import Molecule
 from .Autodescriptor import *
+import json
 
 rdkit_calculator = RDKitDescriptors()
 avfp_calculator = Fingerprint()
@@ -7,9 +8,19 @@ mord2d_calculator = MordredDescriptor()
 jr_calculator = GroupContMethod()
 
 
-def fetch_descriptor(request):
+def process_smiles(smiles_list, option_list):
+    smiles_list = smiles_list.split("\r\n")
 
-    smiles = (request.GET["SMILES"])
+    res_dict = {}
+
+    for smiles in smiles_list:
+        res_dict[smiles] = fetch_descriptor(smiles, option_list)
+
+    return res_dict
+
+
+def fetch_descriptor(smiles, option_list):
+
     data_dict = {}
 
     # find smiles from SQL
@@ -25,33 +36,21 @@ def fetch_descriptor(request):
     # descriptors
     # if available, use database values. if not, calculate them
 
-    # rdkit
-    if "rdkit" in request.GET:
-        if obj.RDKit_desc is None:
-            obj.RDKit_desc = rdkit_calculator.calc(smiles)
-            obj.save()
-        data_dict["rdkit"] = obj.RDKit_desc
+    command_list = [
+        ["rdkit", obj.RDKit_desc, rdkit_calculator],
+        ["avalonFP", obj.avfp_desc, avfp_calculator],
+        ["mordred2d", obj.mord2d_desc, mord2d_calculator],
+        ["JR", obj.jr_desc, jr_calculator],
+    ]
+    for command in command_list:
+        name = command[0]
+        desc = command[1]
+        calculator = command[2]
 
-    # avalon fp
-    if "avfp" in request.GET:
-        if obj.avfp_desc is None:
-            obj.avfp_desc = avfp_calculator.calc(smiles)
-            obj.save()
-        data_dict["avalonFP"] = obj.avfp_desc
+        if name in option_list:
+            if desc is None:
+                desc = calculator.calc(smiles)
+                obj.save()
+            data_dict[name] = desc
 
-    # mord2d
-    if "mord2d" in request.GET:
-        if obj.mord2d_desc is None:
-            obj.mord2d_desc = mord2d_calculator.calc(smiles)
-            obj.save()
-        data_dict["mordred2d"] = obj.mord2d_desc
-
-    # JR
-    if "jr" in request.GET:
-        if obj.jr_desc is None:
-            obj.jr_desc = jr_calculator.calc(smiles)
-            obj.save()
-        data_dict["JR"] = obj.jr_desc
-
-    # refresh record
     return data_dict
