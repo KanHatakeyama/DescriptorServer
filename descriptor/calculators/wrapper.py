@@ -32,7 +32,6 @@ def fetch_descriptor(smiles, option_list):
         obj.save()
 
     data_dict["SMILES"] = smiles
-    print(option_list)
 
     # descriptors
     # if available, use database values. if not, calculate them
