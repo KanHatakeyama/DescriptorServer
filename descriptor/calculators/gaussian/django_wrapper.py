@@ -44,14 +44,12 @@ def calc_pm7_by_gaussian(sm):
     header = header.replace("test123456", project_name)
     footer = footer.replace("test123456", project_name)
 
-    print(sm)
     # calc
-    # try:
-    if True:
+    try:
         res = auto_gaussian(sm, header, footer, project_name=project_name)
         parsed_res = parse_result(res)
-    # except:
-    #    parsed_res = {}
+    except:
+        parsed_res = {}
 
     # delete temp files
     for path in [project_name+".chk",
