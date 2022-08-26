@@ -2,6 +2,7 @@ from ..models import Molecule
 from .Autodescriptor import *
 from .gaussian.django_wrapper import GaussianPM7
 import json
+import random
 
 rdkit_calculator = RDKitDescriptors()
 avfp_calculator = Fingerprint()
@@ -12,6 +13,7 @@ pm7_calculator = GaussianPM7()
 
 def process_smiles(smiles_list, option_list):
     smiles_list = smiles_list.split("\r\n")
+    random.shuffle(smiles_list)
 
     res_dict = {}
 
