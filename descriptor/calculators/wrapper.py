@@ -13,6 +13,18 @@ def process_smiles(smiles_list, option_list):
 
     res_dict = {}
 
+    # register smiles
+    for smiles in smiles_list:
+        # find smiles from SQL
+        try:
+            obj = Molecule.objects.get(SMILES__exact=smiles)
+            obj.done = False
+        except:
+            # if not found, make new record
+            obj = Molecule(SMILES=smiles)
+        obj.save()
+
+    # calculate
     for smiles in smiles_list:
         res_dict[smiles] = fetch_descriptor(smiles, option_list)
 
@@ -22,18 +34,11 @@ def process_smiles(smiles_list, option_list):
 def fetch_descriptor(smiles, option_list):
 
     data_dict = {}
-
-    # find smiles from SQL
-    try:
-        obj = Molecule.objects.get(SMILES__exact=smiles)
-    except:
-        # if not found, make new record
-        obj = Molecule(SMILES=smiles)
-        obj.save()
-
     data_dict["SMILES"] = smiles
 
-    # descriptors
+    obj = Molecule.objects.get(SMILES__exact=smiles)
+
+    # get descriptors
     # if available, use database values. if not, calculate them
 
     command_list = [
@@ -59,4 +64,6 @@ def fetch_descriptor(smiles, option_list):
             for k, v in dict_desc.items():
                 data_dict[f"{name}_{k}"] = v
 
+    obj.done = True
+    obj.save()
     return data_dict

@@ -4,7 +4,11 @@ from . import models
 
 
 class MoleculeAdmin(admin.ModelAdmin):
-    pass
+    list_filter = ["done",
+                   "created", "updated"]
+
+    list_display = ["SMILES", "done",
+                    "created", "updated"]
 
 
 admin.site.register(models.Molecule, MoleculeAdmin)
