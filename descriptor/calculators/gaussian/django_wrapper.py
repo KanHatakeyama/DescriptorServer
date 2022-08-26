@@ -45,6 +45,7 @@ def calc_pm7_by_gaussian(sm):
     header = header.replace("test123456", project_name)
     footer = footer.replace("test123456", project_name)
 
+    sm = sm.replace("*", "H")
     # calc
     try:
         res = auto_gaussian(sm, header, footer, project_name=project_name)

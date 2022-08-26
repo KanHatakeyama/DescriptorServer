@@ -9,6 +9,7 @@ class MoleculeAdmin(admin.ModelAdmin):
 
     list_display = ["SMILES", "done",
                     "created", "updated"]
+    search_fields = ["SMILES"]
 
 
 admin.site.register(models.Molecule, MoleculeAdmin)
