@@ -10,6 +10,8 @@ class Molecule(models.Model):
     avfp_desc = models.TextField(null=True, blank=True, max_length=10**5)
     mord2d_desc = models.TextField(null=True, blank=True, max_length=10**5)
     jr_desc = models.TextField(null=True, blank=True, max_length=10**5)
+    PM7_desc = models.TextField(
+        null=True, blank=True, max_length=10**5)
 
     done = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)

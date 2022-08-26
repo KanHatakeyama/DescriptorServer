@@ -1,11 +1,13 @@
 from ..models import Molecule
 from .Autodescriptor import *
+from .gaussian.django_wrapper import GaussianPM7
 import json
 
 rdkit_calculator = RDKitDescriptors()
 avfp_calculator = Fingerprint()
 mord2d_calculator = MordredDescriptor()
 jr_calculator = GroupContMethod()
+pm7_calculator = GaussianPM7()
 
 
 def process_smiles(smiles_list, option_list):
@@ -46,6 +48,7 @@ def fetch_descriptor(smiles, option_list):
         ["avalonFP", "avfp_desc", avfp_calculator],
         ["mordred2d", "mord2d_desc", mord2d_calculator],
         ["JR", "jr_desc", jr_calculator],
+        ["PM7", "PM7_desc", pm7_calculator],
     ]
     for command in command_list:
         name = command[0]
