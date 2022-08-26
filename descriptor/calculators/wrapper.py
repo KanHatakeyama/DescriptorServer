@@ -13,7 +13,6 @@ pm7_calculator = GaussianPM7()
 
 def process_smiles(smiles_list, option_list):
     smiles_list = smiles_list.split("\r\n")
-    random.shuffle(smiles_list)
 
     res_dict = {}
 
@@ -27,6 +26,8 @@ def process_smiles(smiles_list, option_list):
             # if not found, make new record
             obj = Molecule(SMILES=smiles)
         obj.save()
+
+    random.shuffle(smiles_list)
 
     # calculate
     for smiles in smiles_list:
