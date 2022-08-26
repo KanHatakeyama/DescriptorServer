@@ -120,6 +120,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000
 
 try:
     from .private_settings import *
