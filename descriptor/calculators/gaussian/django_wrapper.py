@@ -1,6 +1,7 @@
 from .GaussianWrapper import auto_gaussian, random_name
 from .parse_result import parse_result
 import os
+import glob
 
 # haatree to wavelength
 # https://www2.chemistry.msu.edu/faculty/reusch/virttxtjml/cnvcalc.htm
@@ -58,5 +59,12 @@ def calc_pm7_by_gaussian(sm):
                  f"temp/{project_name}.log", ]:
         if os.path.exists(path):
             os.remove(path)
+
+    # remove other caches
+    for path in glob.glob("*.chk"):
+        try:
+            os.remove(path)
+        except:
+            pass
 
     return parsed_res

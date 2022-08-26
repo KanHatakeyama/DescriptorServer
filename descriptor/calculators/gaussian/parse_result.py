@@ -53,7 +53,7 @@ def parse_result(dat):
     try:
         res_dict["DFT_energy"] = parse_energy(gauss_log_str)
     except:
-        res_dict["DFT_energy"] = np.nan
+        pass
 
     try:
         res_dict["dipoleX"], res_dict["dipoleY"], res_dict["dipoleZ"], res_dict["dipoleTot"] = parse_dipole(
@@ -66,7 +66,7 @@ def parse_result(dat):
     except:
         res_dict["HOMO"], res_dict["LUMO"] = np.nan, np.nan
 
-    res_dict["SMILES"] = sm
+    #res_dict["SMILES"] = sm
     res_dict["est_RI"] = calc_n(alpha, vol)
     # res_dict["alpha"]=alpha
     res_dict["vol"] = vol
