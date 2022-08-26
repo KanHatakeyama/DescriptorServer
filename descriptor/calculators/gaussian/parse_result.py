@@ -75,7 +75,13 @@ def parse_result(dat):
     for k, v in alpha_dict.items():
         res_dict["alpha_"+str(k)] = v
 
-    return res_dict
+    # exclude nan
+    final_dict = {}
+    for k, v in res_dict.items():
+        if v == v:
+            final_dict[k] = v
+
+    return final_dict
 
 
 def calc_density(mw, volume):
