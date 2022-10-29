@@ -5,10 +5,11 @@ from .calculators.wrapper import fetch_descriptor, process_smiles
 from django.views import View
 import pandas as pd
 import json
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
 
-class PostView(View):
+class PostView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         context = {
             'SMILES': "C\nCOC",

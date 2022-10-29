@@ -13,3 +13,5 @@ class MoleculeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(models.Molecule, MoleculeAdmin)
+
+admin.site.site_url = "/descriptor/post"
