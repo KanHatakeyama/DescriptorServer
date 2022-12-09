@@ -9,3 +9,6 @@
 ## Run on your machine (manual under develop.)
 - python manage.py runserver
   - Gaussian 16 should be installed to calculate Gaussian-related descriptors 
+
+## Author
+- Kan Hatakeyama-Sato
