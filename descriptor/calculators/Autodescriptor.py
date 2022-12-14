@@ -14,6 +14,7 @@ import zlib
 import base64
 import joblib
 
+from rdkit.Chem.rdDistGeom import EmbedMolecule
 
 # make mol object from smiles
 def mol_from_smiles(smiles, assert_smiles=True):
@@ -43,12 +44,26 @@ class RDKitDescriptors:
             self.desc_list)
         self.desc_list = ["" +
                           desc_name for desc_name in self.desc_list]
+        self.desc_list.append("molecular_volume")
         self.auto_correct = auto_correct
         self.dict_mode = dict_mode
 
     def _desc_calc(self, smiles):
         m = mol_from_smiles(smiles)
-        return self.calculator.CalcDescriptors(m)
+
+        #calc vol
+        try:
+            m2 = Chem.AddHs(m)
+            params = Chem.rdDistGeom.ETKDGv2()
+            EmbedMolecule(m2, params)
+            AllChem.MMFFOptimizeMolecule(m2)
+            vol = AllChem.ComputeMolVolume(m2)
+        except:
+            vol=np.nan
+
+        desc_list=self.calculator.CalcDescriptors(m)
+        desc_list.append(vol)
+        return desc_list
 
     # calc descriptors
     def calc(self, smiles):
