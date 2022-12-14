@@ -50,7 +50,7 @@ class RDKitDescriptors:
 
     def _desc_calc(self, smiles):
         m = mol_from_smiles(smiles)
-
+        desc_list=list(self.calculator.CalcDescriptors(m))
         #calc vol
         try:
             m2 = Chem.AddHs(m)
@@ -61,7 +61,6 @@ class RDKitDescriptors:
         except:
             vol=np.nan
 
-        desc_list=self.calculator.CalcDescriptors(m)
         desc_list.append(vol)
         return desc_list
 
