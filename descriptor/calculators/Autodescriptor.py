@@ -85,8 +85,9 @@ class RDKitDescriptors:
 
                 if self.auto_correct:
                     descs = auto_correct_descs(descs)
-            except:
+            except Exception as e:
                 descs = [None]*len(self.desc_list)
+                print(e)
 
         desc_dict = {k: v for k, v in zip(self.desc_list, descs)}
 
